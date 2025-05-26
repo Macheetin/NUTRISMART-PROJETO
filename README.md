@@ -2,6 +2,8 @@ PROJETO NUTRISMART
 
 ETAPAS:
 
+RF000 - CRUD
+
 RF001 -  Cadastro de Usuário (Aréa pra cadastro de novos usuários e de login, pede informações como email,senha,altura,peso,sexo e pede
 pro usuário selecionar qual dieta ele irá querer seguir)
 
@@ -21,10 +23,16 @@ a dieta)
 RF006 - Refeições personalizadas pra cada dieta (Cada dieta escolhida pelo usuário terá suas refeições especificas recomendadas para dar seguimento a dieta corretamente,
 baseada em recomendações de nutricionistas)
 
-RF007 - Aba de tirar duvidas com o administrador(área de suporte) (Área pros usuários solicitarem contato com o administrador e tirar suas duvidas ou dar sugestões) 
+RF007 - Suporte usuário/administrador (Área pra contato direto entre o administrador do programa e  o usuario, onde eles podem se comunicar, o usuario pode mandar duvidas e o administrador pode olhar e responde-las, depois o usuario pode ver a resposta)
 
 RF008 - Feedbacks ( Feedbacks diarios,semanais e mensais que variarão de acordo com o compromisso do usuário com a dieta,caso ele esteja seguindo a dieta recomendada ele terá um feedback positivo,caso não esteja,
 terá um feedback negativo notificando o que faltou na sua dieta)
+
+RF009 - Ranking de alimentos mais consumidos(Opção onde o usuario pode ver os alimentos que ele mais consome na sua dieta em forma de ranking)
+
+RF010- Sugestão de alimentos pro usuario(De acordo com a necessidade do usuario e sua dieta selecionada, o sistema recomenda alguns alimentos que ele pode integrar na sua dieta)
+
+RF011- Notificações personalizadas(Lembretes pro usuario beber agua, e tomar cuidado com coisas da sua dieta)
 
 
 
