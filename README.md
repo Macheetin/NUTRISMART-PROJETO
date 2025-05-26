@@ -1,5 +1,11 @@
 PROJETO NUTRISMART BY SAULO EDUARDO
 
+BIBLIOTECAS:
+sqlite3
+re
+datetime
+random
+
 ETAPAS:
 
 RF000 - CRUD
