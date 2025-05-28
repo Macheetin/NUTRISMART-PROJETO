@@ -14,6 +14,7 @@ cursor.execute('''
         senha TEXT NOT NULL,
         peso REAL NOT NULL,
         altura REAL NOT NULL,
+        
         sexo TEXT NOT NULL,
         dieta TEXT NOT NULL,
         imc REAL NOT NULL,
@@ -65,15 +66,18 @@ conn.commit()
 
 # Validar email
 def validar_email(email):
+    """Valida se o e-mail fornecido segue o padrão de e-mail."""
     padrao = r'^[\w\.-]+@[\w\.-]+\.\w+$'
     return re.match(padrao, email) is not None
 
 # Calculo de imc
 def calcular_imc(peso, altura):
+    """Calcula o IMC (Índice de Massa Corporal) com base no peso e altura."""
     return round(peso / (altura ** 2), 2)
 
 # Escolha de dieta
 def escolher_dieta():
+    """Solicita ao usuário que escolha um tipo de dieta entre as opções disponíveis."""
     opcoes = ["Low carb", "Cetogênica", "Hiperproteica", "Bulking"]
     while True:
         print("\nEscolha sua dieta:")
@@ -88,6 +92,7 @@ def escolher_dieta():
 # ----------------- Cadastro ----------------- #
 
 def registrar_usuario():
+    """Solicita informações ao usuário e registra um novo usuário no banco de dados."""
     print("\n=== Cadastro de Usuário ===")
     while True:
         email = input("E-mail: ").strip()
@@ -153,6 +158,7 @@ def registrar_usuario():
 # ----------------- Login ----------------- #
 
 def recuperar_senha():
+    """Permite que o usuário recupere a senha por meio da pergunta de segurança cadastrada."""
     print("\n🔐 Recuperação de Senha")
     email = input("Digite seu e-mail cadastrado: ").strip()
     cursor.execute("SELECT pergunta_seguranca, resposta_seguranca, senha FROM usuarios WHERE email = ?", (email,))
@@ -170,6 +176,7 @@ def recuperar_senha():
         print("❌ Resposta incorreta!")
 
 def login():
+    """Realiza o login do usuário verificando o e-mail e a senha cadastrados."""
     print("\n=== Login ===")
     while True:
         email = input("E-mail: ").strip()
@@ -207,6 +214,7 @@ def login():
 
 # Registrar refeições
 def registrar_refeicao(email_usuario):
+    """Registra uma refeição consumida, informando o alimento, quantidade e data."""
     print("\n🍽️ Registro de Refeição Diária")
     alimento = input("Nome do alimento: ").strip().lower()
 
@@ -235,6 +243,7 @@ def registrar_refeicao(email_usuario):
 
 # Ver refeições registradas
 def ver_refeicoes(email_usuario):
+    """Exibe todas as refeições registradas por um usuário específico."""
     print("\n=== Refeições Registradas ===")
     cursor.execute("SELECT id, alimento, quantidade_gramas, data FROM refeicoes WHERE email_usuario = ?", (email_usuario,))
     refeicoes = cursor.fetchall()
@@ -249,6 +258,7 @@ def ver_refeicoes(email_usuario):
 
 # Ver alimentos recomendados por dieta
 def ver_alimentos_recomendados_usuario(email):
+    """Mostra ao usuário alimentos recomendados com base na dieta selecionada."""
     cursor.execute("SELECT dieta FROM usuarios WHERE email = ?", (email,))
     resultado = cursor.fetchone()
     if not resultado:
@@ -311,6 +321,7 @@ from datetime import date
 
 # Encerrar o dia e ganhar seu feedback em relação a sua meta
 def encerrar_dia(email_usuario):
+    """Calcula e exibe o total calórico consumido no dia e verifica se está dentro da meta."""
     print("\n📅 Encerramento do Dia")
     hoje = date.today().strftime("%Y-%m-%d")
 
@@ -363,6 +374,7 @@ def encerrar_dia(email_usuario):
 
 # Ver ranking de alimentos mais consumidos pelo usuário
 def ranking_alimentos_mais_consumidos(email_usuario):
+    """Exibe os alimentos mais consumidos por um usuário em ordem decrescente."""
     print("\n🏆 Ranking dos alimentos mais consumidos:")
     cursor.execute('''
         SELECT alimento, SUM(quantidade_gramas) as total_gramas
@@ -385,6 +397,7 @@ def ranking_alimentos_mais_consumidos(email_usuario):
 
 # Função pra consultar se o usuário ja registrou alimentação no dia
 def pegar_registros_do_dia(email_usuario):
+    """Retorna os registros de refeições feitas pelo usuário no dia atual."""
     from datetime import datetime
     hoje = datetime.now().date()
     cursor.execute("SELECT * FROM registro_refeicoes WHERE email = ? AND data = ?", (email_usuario, str(hoje)))
@@ -393,6 +406,7 @@ def pegar_registros_do_dia(email_usuario):
 
 # Registro diario pra lembretes
 def submenu_lembretes(email_usuario):
+    """Exibe lembretes ao usuário sobre alimentação e hidratação do dia."""
     registros_diarios = pegar_registros_do_dia(email_usuario)
     
     print("\n--- Lembretes e Alertas ---")
@@ -412,6 +426,7 @@ def submenu_lembretes(email_usuario):
 
 # Enviar mensagem para o administrador
 def contatar_administrador(email_usuario):
+    """Permite que o usuário envie uma mensagem ao administrador do sistema."""
     print("\n--- Contato com o Administrador ---")
     mensagem = input("Digite sua dúvida, sugestão ou mensagem: ")
 
@@ -426,6 +441,7 @@ def contatar_administrador(email_usuario):
 
     # Ver resposta do administrador
 def visualizar_respostas(email_usuario):
+    """Exibe respostas enviadas pelo administrador ao usuário."""
     print("\n--- Respostas do Administrador ---")
     
     cursor.execute("SELECT mensagem, resposta FROM suporte WHERE email = ?", (email_usuario,))
@@ -445,6 +461,7 @@ def visualizar_respostas(email_usuario):
 
 # Menu de suporte do usuario
 def submenu_ajuda_suporte_usuario(email_usuario):
+    """Menu que oferece opções de suporte ao usuário como enviar dúvidas ou ver respostas."""
     while True:
         print("\n=== Ajuda e Suporte ===")
         print("1. Contatar o administrador")
@@ -463,6 +480,7 @@ def submenu_ajuda_suporte_usuario(email_usuario):
 
 # --- Editar meus dados --- #
 def editar_meus_dados(email_usuario):
+    """Permite ao usuário atualizar peso, altura, dieta e recalcular IMC."""
     print("\n=== Editar Meus Dados ===")
 
     try:
@@ -493,6 +511,7 @@ def editar_meus_dados(email_usuario):
 
 # Cadastrar alimentos no banco de dados
 def cadastrar_alimento():
+    """Adiciona um novo alimento ao banco de dados com suas calorias."""
     print("\n=== Inserir novo alimento ===")
     nome = input("Nome do alimento: ").strip().lower()
     try:
@@ -515,6 +534,7 @@ def cadastrar_alimento():
 
 # Ver alimentos cadastrados no banco de dados
 def ver_alimentos():
+    """Lista todos os alimentos cadastrados e suas respectivas calorias."""
     print("\n=== Lista de alimentos cadastrados ===")
     cursor.execute("SELECT nome, calorias FROM alimentos")
     alimentos = cursor.fetchall()
@@ -526,6 +546,7 @@ def ver_alimentos():
 
 # Excluir alimento do banco de dados
 def excluir_alimento():
+    """Exclui um alimento específico do banco de dados conforme nome informado."""
     print("\n=== Excluir alimento ===")
     nome = input("Nome do alimento para excluir: ").strip().lower()
     cursor.execute("SELECT * FROM alimentos WHERE nome = ?", (nome,))
@@ -539,6 +560,7 @@ def excluir_alimento():
 
 # Ver usuarios cadastrados no banco de dados
 def ver_usuarios():
+    """Exibe todos os usuários cadastrados com dados como peso, altura e dieta."""
     print("\n=== Usuários Cadastrados ===")
     cursor.execute("SELECT email, peso, altura, sexo, dieta, imc FROM usuarios")
     usuarios = cursor.fetchall()
@@ -550,6 +572,7 @@ def ver_usuarios():
 
 # Submenu de suporte
 def submenu_suporte_administrador():
+    """Menu de suporte para o administrador visualizar mensagens e responder usuários."""
     while True:
         print("\n--- Suporte ---")
         print("1. Visualizar contatos de usuários")
@@ -566,6 +589,7 @@ def submenu_suporte_administrador():
         else:
             print("❌ Opção inválida!")
 def visualizar_contatos_usuarios():
+    """Mostra todas as mensagens recebidas dos usuários e o status das respostas."""
     cursor.execute("SELECT id, email, mensagem, resposta FROM suporte")
     contatos = cursor.fetchall()
 
@@ -585,6 +609,7 @@ def visualizar_contatos_usuarios():
             print("Resposta: (ainda não respondida)")
 
 def responder_usuario():
+    """Permite ao administrador responder uma mensagem específica de um usuário."""
     visualizar_contatos_usuarios()
     id_resposta = input("\nDigite o ID da mensagem que deseja responder (ou '0' para cancelar): ")
     if id_resposta == '0':
@@ -603,6 +628,7 @@ def responder_usuario():
 
 # ----------------- Menu do Administrador ----------------- #
 def menu_administrador():
+    """Menu com funcionalidades exclusivas para o administrador do sistema."""
     senha_admin = "admin123"  # senha fixa para admin
     tentativa = input("Digite a senha do administrador: ")
     if tentativa != senha_admin:
@@ -638,6 +664,7 @@ def menu_administrador():
 # ----------------- Menu do Usuário Logado ----------------- #
 
 def menu_usuario_logado(email_usuario):
+    """menu principal com as funcionalidades disponíveis para o usuário logado."""
     while True:
         print(f"\n=== Bem-vindo {email_usuario} ===")
         print("1. Registrar refeição")
@@ -676,6 +703,7 @@ def menu_usuario_logado(email_usuario):
 # ----------------- Menu Principal ----------------- #
 
 def menu_principal():
+    """Menu inicial do sistema com opções de cadastro, login ou acesso do administrador."""
     while True:
         print("\n--- Menu Nutrismart ---")
         print("1. Cadastrar usuário")
