@@ -5,6 +5,7 @@ sqlite3
 re
 datetime
 random
+tkinter
 
 ETAPAS:
 
