@@ -73,3 +73,10 @@ RF010- Sugestão de alimentos pro usuario(De acordo com a necessidade do usuario
 
 RF011- Notificações personalizadas(Lembretes pro usuario beber agua, e tomar cuidado com coisas da sua dieta)
 
+RF012- CRUD da interface
+
+RF013- Interface gráfica
+
+RF014 - Melhoria nos tratamentos de erro dentro da interface grafica
+
+RF015 - Interligação funções da interface e do terminal
